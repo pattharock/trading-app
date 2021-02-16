@@ -8,7 +8,7 @@ cursor = connection.cursor()
 
 cursor.execute("""
     SELECT symbol, name FROM stock
-""")
+""") 
 
 rows = cursor.fetchall()
 symbols = [row['symbol'] for row in rows]
@@ -26,10 +26,10 @@ for asset in assets:
   try:
     if asset.status == 'active' and asset.tradable and (asset.symbol not in symbols):
       cursor.execute("""
-      INSERT INTO stock (symbol, name)
-      VALUES (?, ?)
-        """, (asset.symbol, asset.name))
-      print(f'Added a new stock: {asset.symbol} ({asset.name})')
+      INSERT INTO stock (symbol, name, exchange)
+      VALUES (?, ?, ?)
+        """, (asset.symbol, asset.name, asset.exchange))
+      print(f'Added a new stock: {asset.symbol} ({asset.exchange} : {asset.name})')
   except Exception as e:
         print(asset.symbol)
         print(e)

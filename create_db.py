@@ -8,7 +8,8 @@ cursor.execute("""
     CREATE TABLE IF NOT EXISTS stock (
         id INTEGER PRIMARY KEY,  
         symbol TEXT NOT NULL UNIQUE, 
-        name TEXT NOT NULL
+        name TEXT NOT NULL, 
+        exchange TEXT NOT NULL 
     )
 """)
 cursor.execute("""
