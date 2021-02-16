@@ -1,12 +1,14 @@
 import sqlite3
 import config
-from datetime import date
+from datetime import date, timedelta
 from fastapi import templating
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
+
+current_date = (date.today() - timedelta(days=4)).isoformat()
 
 
 @app.get("/")
@@ -15,7 +17,7 @@ def index(request: Request):
     connection = sqlite3.connect(config.DB_FILE)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
-    
+
     if stock_filter == "new_closing_highs":
         cursor.execute("""
         SELECT * FROM (
@@ -26,7 +28,7 @@ def index(request: Request):
           GROUP BY stock_id
           ORDER BY symbol
         ) WHERE date = ?
-      """, (date.today().isoformat(), ))
+      """, (current_date, ))
         rows = cursor.fetchall()
 
     elif stock_filter == "new_intraday_highs":
@@ -50,7 +52,6 @@ def index(request: Request):
       """)
         rows = cursor.fetchall()
 
-    
     return templates.TemplateResponse("index.html", {"request": request, "stocks": rows})
 
 
