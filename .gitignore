@@ -3,7 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# database
 app.db
+app.db-journal
 # C extensions
 *.so
 
