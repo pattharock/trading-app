@@ -15,7 +15,7 @@ def index(request: Request):
     connection = sqlite3.connect(config.DB_FILE)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
-
+    
     if stock_filter == "new_closing_highs":
         cursor.execute("""
         SELECT * FROM (
